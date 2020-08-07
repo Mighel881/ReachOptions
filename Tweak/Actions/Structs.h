@@ -54,3 +54,15 @@
 - (void)setSpawnedProcessDisclaimed:(BOOL)arg1 ;
 - (BOOL)isSpawnedProcessDisclaimed;
 @end
+
+// End NSTask
+
+@interface SBControlCenterController
++(id)sharedInstance;
++(void)presentAnimated:(BOOL)arg1;
+@end
+
+@interface SpringBoard
+-(void)_simulateLockButtonPress;
+-(void)takeScreenshot;
+@end

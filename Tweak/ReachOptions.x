@@ -1,37 +1,42 @@
-// ReachOptions v-1.0
+// ReachOptions
 // Copyright (c) ajaidan0 2020
 
-#import "Headers/ReachOptions.h"
+#import "ReachOptions.h"
 
 @implementation ReachOptions
 
-+(void)respring {
-    NSTask *task = [[NSTask alloc] init];
-	[task setLaunchPath:@"/usr/bin/killall"];
-    [task setArguments:@[@"-9", @"SpringBoard"]];
-	[task launch];
-}
-
-+(void)uicache {
-    NSTask *task = [[NSTask alloc] init];
-	[task setLaunchPath:@"/usr/bin/uicache"];
-    [task setArguments:@[]];
-	[task launch];
-}
-
 +(void)setupMenu {
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Pick an action." message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-    UIAlertAction *one = [UIAlertAction actionWithTitle:@"Take a Screenshot" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {[(SpringBoard *)[UIApplication sharedApplication] takeScreenshot];}]; // Take screenshot
-    UIAlertAction *two = [UIAlertAction actionWithTitle:@"Open Control Center" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {[[%c(SBControlCenterController) sharedInstance] presentAnimated:YES];}]; // Open CC
-    UIAlertAction *three = [UIAlertAction actionWithTitle:@"Lock Device" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {[(SpringBoard *)[UIApplication sharedApplication] _simulateLockButtonPress];}]; // Lock device
-    UIAlertAction *four = [UIAlertAction actionWithTitle:@"Respring" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {[self respring];}]; // Respring device
-    UIAlertAction *five = [UIAlertAction actionWithTitle:@"UICache" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {[self uicache];}]; // UICache device
-    if (ss) {[alert addAction:one];}
-    if (cc) {[alert addAction:two];}
-    if (lock) {[alert addAction:three];}
-    if (respring) {[alert addAction:four];}
-    if (uicache) {[alert addAction:five];}
-    [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:alert animated:YES completion:nil];
+    UIAlertAction *one = [UIAlertAction actionWithTitle:@"Take a Screenshot" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {[%c(ROScreenshot) exec];}]; // Take screenshot
+    UIAlertAction *two = [UIAlertAction actionWithTitle:@"Open Control Center" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {[%c(ROControlCenter) exec];}]; // Open CC
+    UIAlertAction *three = [UIAlertAction actionWithTitle:@"Lock Device" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {[%c(ROLock) exec];}]; // Lock device
+    UIAlertAction *four = [UIAlertAction actionWithTitle:@"Respring" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {[%c(RORespring) exec];}]; // Respring device
+    UIAlertAction *five = [UIAlertAction actionWithTitle:@"UICache" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {[%c(ROUICache) exec];}]; // UICache device
+    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"No" style:UIAlertActionStyleCancel handler:nil];
+    if (ss) {
+        [alert addAction:one];
+        shouldCancel = TRUE;
+    }
+    if (cc) {
+        [alert addAction:two];
+        shouldCancel = TRUE;
+    }
+    if (lock) {
+        [alert addAction:three];
+        shouldCancel = TRUE;
+    }
+    if (respring) {
+        [alert addAction:four];
+        shouldCancel = TRUE;
+    }
+    if (uicache) {
+        [alert addAction:five];
+        shouldCancel = TRUE;
+    }
+    if (shouldCancel) {
+        [alert addAction:cancel];
+        [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:alert animated:YES completion:nil];
+    }
 }
 
 @end
