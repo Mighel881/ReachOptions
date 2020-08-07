@@ -1,0 +1,9 @@
+Package: com.ajaidan.reachoptions
+Name: ReachOptions
+Version: 0.0.1
+Architecture: iphoneos-arm
+Description: An awesome MobileSubstrate tweak!
+Maintainer: ajaidan0
+Author: ajaidan0
+Section: Tweaks
+Depends: mobilesubstrate (>= 0.9.5000)
