@@ -1,31 +1,61 @@
-@interface SBReachabilityManager : UIAlertController
--(void)_activateReachability:(id)arg1;
--(void)_toggleReachabilityMode;
-@end
+// ReachOptions v-1.0
+// Copyright (c) ajaidan0 2020
 
-@interface SBControlCenterController
-+(id)sharedInstance;
-+(void)presentAnimated:(BOOL)arg1;
-@end
+#import "Headers/ReachOptions.h"
 
-@interface SpringBoard
--(void)_simulateLockButtonPress;
--(void)takeScreenshot;
+@implementation ReachOptions
+
++(void)respring {
+    NSTask *task = [[NSTask alloc] init];
+	[task setLaunchPath:@"/usr/bin/killall"];
+    [task setArguments:@[@"-9", @"SpringBoard"]];
+	[task launch];
+}
+
++(void)uicache {
+    NSTask *task = [[NSTask alloc] init];
+	[task setLaunchPath:@"/usr/bin/uicache"];
+    [task setArguments:@[]];
+	[task launch];
+}
+
++(void)setupMenu {
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Pick an action." message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    UIAlertAction *one = [UIAlertAction actionWithTitle:@"Take a Screenshot" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {[(SpringBoard *)[UIApplication sharedApplication] takeScreenshot];}]; // Take screenshot
+    UIAlertAction *two = [UIAlertAction actionWithTitle:@"Open Control Center" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {[[%c(SBControlCenterController) sharedInstance] presentAnimated:YES];}]; // Open CC
+    UIAlertAction *three = [UIAlertAction actionWithTitle:@"Lock Device" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {[(SpringBoard *)[UIApplication sharedApplication] _simulateLockButtonPress];}]; // Lock device
+    UIAlertAction *four = [UIAlertAction actionWithTitle:@"Respring" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {[self respring];}]; // Respring device
+    UIAlertAction *five = [UIAlertAction actionWithTitle:@"UICache" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {[self uicache];}]; // UICache device
+    if (ss) {[alert addAction:one];}
+    if (cc) {[alert addAction:two];}
+    if (lock) {[alert addAction:three];}
+    if (respring) {[alert addAction:four];}
+    if (uicache) {[alert addAction:five];}
+    [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:alert animated:YES completion:nil];
+}
+
 @end
 
 %hook SBReachabilityManager
 
 -(void)_activateReachability:(id)arg1 {
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Pick an action." message:nil preferredStyle:0];
-    UIAlertAction *ss = [UIAlertAction actionWithTitle:@"Take a Screenshot" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {[(SpringBoard *)[UIApplication sharedApplication] takeScreenshot];}]; // Take screenshot
-    UIAlertAction *cc = [UIAlertAction actionWithTitle:@"Open Control Center" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {[[%c(SBControlCenterController) sharedInstance] presentAnimated:YES];}]; // Open CC
-    UIAlertAction *lock = [UIAlertAction actionWithTitle:@"Lock Device" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {[(SpringBoard *)[UIApplication sharedApplication] _simulateLockButtonPress];}]; // Lock device
-    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {return;}]; // Cancel
-    [alert addAction:ss];
-    [alert addAction:cc];
-    [alert addAction:lock];
-    [alert addAction:cancel];
-    [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:alert animated:YES completion:nil];
+    if (isEnabled) {
+        // Setup menu
+        [ReachOptions setupMenu];
+    } else {
+        %orig;
+    }
 }
 
 %end
+
+// Loads prefs and inits
+%ctor {
+	HBPreferences *preferences = [[HBPreferences alloc] initWithIdentifier:@"com.ajaidan.reachoptionsprefs"];
+    [preferences registerBool:&isEnabled default:NO forKey:@"isEnabled"];
+	[preferences registerBool:&ss default:NO forKey:@"1"];
+	[preferences registerBool:&cc default:NO forKey:@"2"];
+	[preferences registerBool:&lock default:NO forKey:@"3"];
+	[preferences registerBool:&respring default:NO forKey:@"4"];
+	[preferences registerBool:&uicache default:NO forKey:@"5"];
+}
