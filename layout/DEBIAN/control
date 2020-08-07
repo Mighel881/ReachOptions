@@ -2,7 +2,7 @@ Package: com.ajaidan.reachoptions
 Name: ReachOptions
 Version: 0.0.1
 Architecture: iphoneos-arm
-Description: An awesome MobileSubstrate tweak!
+Description: A tweak to remove table separators from iOS.
 Maintainer: ajaidan0
 Author: ajaidan0
 Section: Tweaks
