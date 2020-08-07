@@ -48,6 +48,10 @@
 
 %hook SBReachabilityManager
 
+-(void)_setKeepAliveTimer {
+    if (isEnabled) {} else {%orig;}
+}
+
 -(void)_activateReachability:(id)arg1 {
     if (isEnabled) {
         // Setup menu
