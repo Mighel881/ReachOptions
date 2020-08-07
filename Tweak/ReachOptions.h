@@ -12,4 +12,4 @@
 +(void)setupMenu;
 @end
 
-BOOL isEnabled, ss, cc, lock, respring, uicache, shouldCancel;
+BOOL isEnabled, ss, cc, lock, respring, uicache, wifi, shouldCancel;

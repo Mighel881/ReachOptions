@@ -12,7 +12,8 @@
     UIAlertAction *three = [UIAlertAction actionWithTitle:@"Lock Device" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {[%c(ROLock) exec];}]; // Lock device
     UIAlertAction *four = [UIAlertAction actionWithTitle:@"Respring" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {[%c(RORespring) exec];}]; // Respring device
     UIAlertAction *five = [UIAlertAction actionWithTitle:@"UICache" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {[%c(ROUICache) exec];}]; // UICache device
-    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"No" style:UIAlertActionStyleCancel handler:nil];
+    UIAlertAction *six = [UIAlertAction actionWithTitle:@"Enable/Disable WiFi" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {[%c(ROWiFi) exec];}]; // Enable/Disable WiFi
+    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
     if (ss) {
         [alert addAction:one];
         shouldCancel = TRUE;
@@ -31,6 +32,10 @@
     }
     if (uicache) {
         [alert addAction:five];
+        shouldCancel = TRUE;
+    }
+    if (wifi) {
+        [alert addAction:six];
         shouldCancel = TRUE;
     }
     if (shouldCancel) {
@@ -63,4 +68,5 @@
 	[preferences registerBool:&lock default:NO forKey:@"3"];
 	[preferences registerBool:&respring default:NO forKey:@"4"];
 	[preferences registerBool:&uicache default:NO forKey:@"5"];
+    [preferences registerBool:&wifi default:NO forKey:@"6"];
 }

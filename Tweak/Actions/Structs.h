@@ -66,3 +66,9 @@
 -(void)_simulateLockButtonPress;
 -(void)takeScreenshot;
 @end
+
+@interface SBWiFiManager
++(id)sharedInstance;
+-(void)setWiFiEnabled:(BOOL)arg1;
+-(BOOL)wiFiEnabled;
+@end
