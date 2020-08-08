@@ -7,6 +7,7 @@
 #import "Actions/ROLock.h"
 #import "Actions/ROControlCenter.h"
 #import "Actions/ROScreenshot.h"
+#import "UIDevice+notchedDevice.h"
 
 @interface ReachOptions : UIAlertController
 +(void)setupMenu;

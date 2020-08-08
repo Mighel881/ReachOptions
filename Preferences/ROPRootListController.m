@@ -14,7 +14,6 @@
 	self = [super init];
 	if(self) {
 		_respringApplyButton = (_respringApplyButton) ?: [[UIBarButtonItem alloc] initWithTitle:@"Apply" style:UIBarButtonItemStyleDone target:self action:@selector(respring)];
-		_respringApplyButton.tintColor = [UIColor blackColor];
 		[self.navigationItem setRightBarButtonItem:_respringApplyButton animated:YES];
 
 	}

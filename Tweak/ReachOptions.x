@@ -52,6 +52,15 @@
     if (isEnabled) {} else {%orig;}
 }
 
+-(void)toggleReachability {
+    if (isEnabled) {
+        // Setup menu
+        [ReachOptions setupMenu];
+    } else {
+        %orig;
+    }
+}
+
 -(void)_activateReachability:(id)arg1 {
     if (isEnabled) {
         // Setup menu
@@ -65,6 +74,13 @@
 
 // Loads prefs and inits
 %ctor {
+    if ([UIDevice.currentDevice isAnIpod]) {
+        return;
+    }
+
+    if ([UIDevice.currentDevice isAnIpad]) {
+        return;
+    }
 	HBPreferences *preferences = [[HBPreferences alloc] initWithIdentifier:@"com.ajaidan.reachoptionsprefs"];
     [preferences registerBool:&isEnabled default:NO forKey:@"isEnabled"];
 	[preferences registerBool:&ss default:NO forKey:@"1"];
