@@ -72,3 +72,8 @@
 -(void)setWiFiEnabled:(BOOL)arg1;
 -(BOOL)wiFiEnabled;
 @end
+
+@interface AXSpringBoardServer
++(id)server;
+-(void)revealSpotlight;
+@end

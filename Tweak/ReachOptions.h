@@ -7,10 +7,7 @@
 #import "Actions/ROLock.h"
 #import "Actions/ROControlCenter.h"
 #import "Actions/ROScreenshot.h"
+#import "Actions/ROSpotlight.h"
 #import "UIDevice+notchedDevice.h"
 
-@interface ReachOptions : UIAlertController
-+(void)setupMenu;
-@end
-
-BOOL isEnabled, ss, cc, lock, respring, uicache, wifi, shouldCancel;
+BOOL isEnabled, ss, cc, lock, respring, uicache, wifi, spotlight, shouldCancel;
